@@ -1,0 +1,63 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData"
+    xmlns:ux="http://www.sap.com/Protocols/OData4SAP/UX"
+    xmlns:gp="http://www.sap.com/Protocols/SAPData/GenericPlayer" Version="1.0">
+    <edmx:DataServices
+        xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+        <Schema
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ZMM_PO_APPROVAL_SRV" sap:schema-version="1" xml:lang="en">
+            <EntityType Name="Header_info" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Ebeln"/>
+                </Key>
+                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:creatable="false" sap:label="Purchasing Doc."/>
+                <Property Name="Ernam" Type="Edm.String" Nullable="false" MaxLength="12" sap:creatable="false" sap:updatable="false" sap:label="Created by"/>
+                <Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:creatable="false" sap:updatable="false" sap:label="Vendor"/>
+                <Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:creatable="false" sap:updatable="false" sap:semantics="currency-code" sap:label="Currency"/>
+                <Property Name="Approved" Type="Edm.String" Nullable="false" MaxLength="1" sap:creatable="false" sap:label="Yes/No"/>
+                <Property Name="Rtext" Type="Edm.String" Nullable="false" MaxLength="200" sap:creatable="false" sap:label=" Reason Text"/>
+                <NavigationProperty Name="Item_Nav" Relationship="ZMM_PO_APPROVAL_SRV.header_item" FromRole="FromRole_header_item" ToRole="ToRole_header_item"/>
+            </EntityType>
+            <EntityType Name="item_details" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Ebeln"/>
+                    <PropertyRef Name="Ebelp"/>
+                </Key>
+                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:creatable="false" sap:label="Purchasing Doc."/>
+                <Property Name="Ebelp" Type="Edm.String" Nullable="false" MaxLength="5" sap:creatable="false" sap:label="Item"/>
+                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="18" sap:creatable="false" sap:label="Material"/>
+                <Property Name="Menge" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:creatable="false" sap:label="PO Quantity"/>
+                <Property Name="Meins" Type="Edm.String" Nullable="false" MaxLength="3" sap:creatable="false" sap:semantics="unit-of-measure" sap:label="Order Unit"/>
+                <Property Name="Netpr" Type="Edm.Decimal" Nullable="false" Precision="12" Scale="3" sap:creatable="false" sap:label="Net Price"/>
+                <Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:creatable="false" sap:semantics="currency-code" sap:label="Currency"/>
+                <Property Name="Maktx" Type="Edm.String" Nullable="false" MaxLength="40" sap:creatable="false" sap:label="Description"/>
+                <NavigationProperty Name="Header_Nav" Relationship="ZMM_PO_APPROVAL_SRV.header_item" FromRole="ToRole_header_item" ToRole="FromRole_header_item"/>
+            </EntityType>
+            <Association Name="header_item" sap:content-version="1">
+                <End Type="ZMM_PO_APPROVAL_SRV.Header_info" Multiplicity="1" Role="FromRole_header_item"/>
+                <End Type="ZMM_PO_APPROVAL_SRV.item_details" Multiplicity="*" Role="ToRole_header_item"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_header_item">
+                        <PropertyRef Name="Ebeln"/>
+                    </Principal>
+                    <Dependent Role="ToRole_header_item">
+                        <PropertyRef Name="Ebeln"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ZMM_PO_APPROVAL_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="Header_infoSet" EntityType="ZMM_PO_APPROVAL_SRV.Header_info" sap:content-version="1" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true"/>
+                <EntitySet Name="item_detailsSet" EntityType="ZMM_PO_APPROVAL_SRV.item_details" sap:content-version="1" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true"/>
+                <AssociationSet Name="header_itemSet" Association="ZMM_PO_APPROVAL_SRV.header_item" deletable="false" creatable="false" updatable="false">
+                    <End EntitySet="Header_infoSet" Role="FromRole_header_item"/>
+                    <End EntitySet="item_detailsSet" Role="ToRole_header_item"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link
+                xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="https://dl1106.eur-d.howdev.corp:8000/sap/opu/odata/sap/ZMM_PO_APPROVAL_SRV;v=1/$metadata"/>
+                <atom:link
+                    xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="https://dl1106.eur-d.howdev.corp:8000/sap/opu/odata/sap/ZMM_PO_APPROVAL_SRV;v=1/$metadata"/>
+                </Schema>
+            </edmx:DataServices>
+        </edmx:Edmx>

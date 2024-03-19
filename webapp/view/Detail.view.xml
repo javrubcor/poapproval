@@ -1,0 +1,78 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:footerbar="sap.ushell.ui.footerbar"
+	controllerName="howdensPO.controller.Detail">
+	<semantic:DetailPage id="page" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="{i18n>detailTitle}"
+		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+		<semantic:content>
+			<ObjectHeader id="objectHeader" title="{i18n>Vendor}: {Lifnr}"
+				number="{ parts:[{path:'Netwr'},{path:'Waers'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+				numberUnit="{Waers}" backgroundDesign="Solid">
+				<attributes>
+					<ObjectAttribute text="{Bukrs}" />
+					<ObjectAttribute text="{Ekgrp}" />
+				</attributes>
+			</ObjectHeader>
+			<Table id="lineItemsList" width="auto" items="{Item_Nav}" updateFinished="onListUpdateFinished"
+				busyIndicatorDelay="{detailView>/lineItemTableDelay}" class="sapUiResponsiveMargin" headerText="{i18n>detailLineItemTableHeading}"
+				footerText="{i18n>Requestedby}: {Ernam}" backgroundDesign="Solid">
+				<headerToolbar>
+					<Toolbar id="lineItemsToolbar">
+						<Title id="lineItemsHeader" text="{i18n>PurchaseOrder}:{Ebeln} {detailView>/lineItemListTitle}"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column width="18em">
+						<Text text="{i18n>Product}"/>
+					</Column>
+					<Column width="10em" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<Text text="{i18n>Quantity}"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+						<Text text="{i18n>UnitPrice}"/>
+					</Column>
+					<Column hAlign="End">
+						<Text text="{i18n>Price}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<VBox>
+								<ObjectIdentifier title="{Txz01}" text="{Matnr} - {Capex}"/>
+								<Text text="{Kostl}"/>
+								<Text text="{Sakto}"/>
+								<Text text=""/>
+							</VBox>
+							<ObjectNumber number="{ parts:[{path:'Menge'},{path:'Meins'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+								unit="{Meins}"/>
+							<ObjectNumber number="{ parts:[{path:'Netpr'},{path:'Waers'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+								unit="{Waers}"/>
+							<ObjectNumber number="{ parts:[{path:'Total'},{path:'Waers'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false} }"
+								unit="{Waers}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+		<semantic:customFooterContent>
+			<Button id="texts" press="onDetailPress" text="{Txtcount}" activeIcon="sap-icon://post" icon="sap-icon://post"
+				type="Emphasized" tooltip="Details"/>
+		</semantic:customFooterContent>
+		<semantic:customFooterContent>
+			<Button enabled="true" id="approve" press="onApprovePress" text="{i18n>Approve}" activeIcon="sap-icon://accept" icon="sap-icon://accept"
+				type="Accept"/>
+		</semantic:customFooterContent>
+		<semantic:customFooterContent>
+			<Button enabled="true" id="reject" press="onRejectPress" text="{i18n>Reject}" activeIcon="sap-icon://reject" icon="sap-icon://decline"
+				type="Reject" tooltip="Reject the PO"/>
+		</semantic:customFooterContent>
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:shareInJamAction>
+			<semantic:ShareInJamAction id="shareInJam" visible="{FLP>/isShareInJamActive}" press="onShareInJamPress"/>
+		</semantic:shareInJamAction>
+		<semantic:saveAsTileAction>
+			<footerbar:AddBookmarkButton id="shareTile" title="{detailView>/saveAsTileTitle}"/>
+		</semantic:saveAsTileAction>
+	</semantic:DetailPage>
+</mvc:View>
